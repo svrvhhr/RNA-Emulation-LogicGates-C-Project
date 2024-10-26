@@ -36,7 +36,23 @@ void init_RNA(RNA *nn, int input_size, int output_size,int hidden_size )
     nn->biais_hidden=(double *)malloc(nn->hidden_size*sizeof(double));
     nn->biais_output=(double *)malloc(nn->output_size*sizeof(double));
 
+    // Initialisation aléatoire des poids
 
+    for (int i=0 ; i <input_size ; i++)
+    {
+        for (int j=0 ; j <hidden_size ; j++)
+        {
+            nn->w_input_hidden[i][j]=(rand()%100)/100.0;
+        }
+    }
+
+    for (int i=0 ; i <hidden_size ; i++)
+    {
+        for (int j=0 ; j <output_size ; j++)
+        {
+            nn->w_hidden_output[i][j]=(rand()%100)/100.0;
+        }
+    }
 
 
 }
