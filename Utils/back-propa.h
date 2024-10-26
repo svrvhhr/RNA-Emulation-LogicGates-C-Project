@@ -1,6 +1,5 @@
 #include <stdlib.h>
-#include "sigmoide.h"  
-#include "init-rna.h"
+#include "propagation.h"
 
 void backpropagation(RNA *nn, double *target, double learning_rate) { // Target : Output desirés ; learning_rate : taux d'apprentissage -> voir readme
     double *output_errors = (double *)malloc(nn->output_size * sizeof(double));
@@ -17,7 +16,7 @@ void backpropagation(RNA *nn, double *target, double learning_rate) { // Target 
         for (int j = 0; j < nn->output_size; j++) {
             hidden_errors[i] += output_errors[j] * nn->w_hidden_output[i][j];
         }
-        hidden_errors[i] *= sigmoid_derivative(nn->hidden[i]);
+        hidden_errors[i] *= sigmoide_derivative(nn->hidden[i]);
     }
 
     // Mettre à jour les poids de la couche cachée vers la couche de sortie
