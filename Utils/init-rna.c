@@ -66,3 +66,14 @@ void init_RNA(RNA *nn, int input_size, int output_size, int hidden_size)
         nn->biais_output[i] = (rand() % 100) / 100.0;
     }
 }
+
+// Libération de la mémoire
+void free_network(RNA *nn) {
+    free(nn->input);
+    free(nn->hidden);
+    free(nn->output);
+    free_matrix(nn->w_input_hidden, nn->input_size); // Libérer la mémoire des poids d'entrée à cachée
+    free_matrix(nn->w_hidden_output, nn->hidden_size); // Libérer la mémoire des poids cachée à sortie
+    free(nn->biais_hidden);
+    free(nn->biais_output);
+}
