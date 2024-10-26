@@ -62,33 +62,29 @@ La propagation avant calcule la sortie de chaque neurone, couche par couche, de 
 ### 2. Rétropropagation
 La rétropropagation ajuste les poids et biais pour réduire l'erreur entre la sortie prédite et la sortie attendue, en suivant le gradient de l'erreur.
 
-# Calcul de l'erreur en sortie
+- **Calcul de l'erreur en sortie** :
+  Pour la couche de sortie \( L \), l'erreur pour chaque neurone \( j \) est donnée par :
+  \[
+  \delta_j^{(L)} = \frac{\partial C}{\partial a_j^{(L)}} \cdot f'(z_j^{(L)})
+  \]
+  où :
+  - \( C \) est la fonction de coût (par exemple, l'erreur quadratique moyenne),
+  - \( f'(z_j^{(L)}) \) est la dérivée de la fonction d'activation appliquée à \( z_j^{(L)} \).
 
-Pour la couche de sortie ( \(L\) ), l'erreur pour chaque neurone \(j\) est donnée par :
-\[
-\delta_j^{(L)} = \frac{\partial C}{\partial a_j^{(L)}} \cdot f'(z_j^{(L)})
-\]
-où :
-- \( C \) est la fonction de coût (par exemple, l'erreur quadratique moyenne),
-- \( f'(z_j^{(L)}) \) est la dérivée de la fonction d'activation appliquée à \( z_j^{(L)} \).
+- **Propagation de l'erreur vers l'arrière** :
+  Pour une couche \( l \) avant la couche de sortie, l'erreur \( \delta_j^{(l)} \) pour chaque neurone \( j \) est :
+  \[
+  \delta_j^{(l)} = \left( \sum_{k} \delta_k^{(l+1)} \cdot w_{jk}^{(l+1)} \right) \cdot f'(z_j^{(l)})
+  \]
 
-## Propagation de l'erreur vers l'arrière
-
-Pour une couche \(l\) avant la couche de sortie, l'erreur \( \delta_j^{(l)} \) pour chaque neurone \(j\) est :
-\[
-\delta_j^{(l)} = \left( \sum_{k} \delta_k^{(l+1)} \cdot w_{jk}^{(l+1)} \right) \cdot f'(z_j^{(l)})
-\]
-
-## Mise à jour des poids et biais
-
-Les poids et biais sont ajustés pour chaque couche :
-\[
-w_{ij}^{(l)} := w_{ij}^{(l)} - \eta \cdot \delta_j^{(l)} \cdot a_i^{(l-1)}
-\]
-\[
-b_j^{(l)} := b_j^{(l)} - \eta \cdot \delta_j^{(l)}
-\]
-où \( \eta \) est le taux d'apprentissage.
-
+- **Mise à jour des poids et biais** :
+  Les poids et biais sont ajustés pour chaque couche :
+  \[
+  w_{ij}^{(l)} := w_{ij}^{(l)} - \eta \cdot \delta_j^{(l)} \cdot a_i^{(l-1)}
+  \]
+  \[
+  b_j^{(l)} := b_j^{(l)} - \eta \cdot \delta_j^{(l)}
+  \]
+  où \( \eta \) est le taux d'apprentissage.
 
 Ces étapes permettent au réseau de minimiser l'erreur entre les prédictions et les valeurs cibles.
