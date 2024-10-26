@@ -23,7 +23,7 @@ void feedforward(RNA *nn)
             nn->output[i] += nn->hidden[j] * nn->w_hidden_output[j][i]; 
         }
         nn->output[i] += nn->biais_output[i]; // Ajouter le biais de la couche de sortie
-        nn->output[i] = sigmoid(nn->output[i]); // Appliquer la fonction d'activation
+        nn->output[i] = sigmoide_function(nn->output[i]); // Appliquer la fonction d'activation
     }
 
 }
