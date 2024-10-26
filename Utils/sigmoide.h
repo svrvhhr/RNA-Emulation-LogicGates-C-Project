@@ -7,4 +7,3 @@ double sigmoide_function(double x){
 double sigmoide_derivative(double x){
     return (x*(1.0-x));
 }
-
