@@ -88,3 +88,26 @@ La rétropropagation ajuste les poids et biais pour réduire l'erreur entre la s
   où \( \eta \) est le taux d'apprentissage.
 
 Ces étapes permettent au réseau de minimiser l'erreur entre les prédictions et les valeurs cibles.
+
+
+## Rôle du Taux d'Apprentissage
+
+### Contrôle de la Taille des Mises à Jour
+- Le taux d'apprentissage détermine la quantité par laquelle les poids du réseau sont ajustés à chaque itération lors de la rétropropagation.
+- Si le taux d'apprentissage est trop élevé, les mises à jour des poids peuvent être trop importantes, ce qui peut faire diverger le modèle (c'est-à-dire qu'il ne parviendra pas à converger vers un minimum de la fonction de perte).
+
+### Stabilité de l'Apprentissage
+- Un taux d'apprentissage trop élevé peut entraîner des oscillations autour du minimum, où le modèle ne parvient pas à converger, ce qui signifie que l'erreur de prédiction reste élevée.
+- En revanche, un taux d'apprentissage trop bas peut rendre l'apprentissage très lent et nécessiter de nombreuses itérations avant d'atteindre une performance acceptable.
+
+### Équilibre entre Vitesse et Précision
+- Le choix d'un bon taux d'apprentissage est un équilibre entre rapidité (vitesse de convergence) et précision (capacité à minimiser la fonction de perte).
+- Un bon taux d'apprentissage permet au modèle d'apprendre efficacement sans sauter des minima locaux.
+
+## Stratégies d'Optimisation
+
+Pour améliorer le processus d'apprentissage, plusieurs stratégies peuvent être utilisées concernant le taux d'apprentissage :
+
+- **Taux d'Apprentissage Adaptatif**: Des algorithmes comme Adam ou RMSprop ajustent automatiquement le taux d'apprentissage pour chaque poids en fonction de l'historique des gradients.
+
+- **Diminution du Taux d'Apprentissage**: Commencer avec un taux d'apprentissage relativement élevé et le réduire progressivement (annealing) peut aider à stabiliser l'apprentissage à mesure que le modèle converge.
