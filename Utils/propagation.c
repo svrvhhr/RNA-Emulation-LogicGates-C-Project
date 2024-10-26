@@ -15,6 +15,7 @@ void feedforward(RNA *nn)
         nn->hidden[i]+= nn->biais_hidden[i]; // Ajouter le biais de la couche cachée
         nn->hidden[i]=sigmoide_function(nn->hidden[i]);
     }
+
 }
 
 
