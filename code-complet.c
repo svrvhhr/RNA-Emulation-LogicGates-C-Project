@@ -231,6 +231,35 @@ void train(RNA *nn, double inputs[][2], double targets[], int num_samples, int e
 
 //     return 0;
 // }
+void print_weights_and_biases(RNA *nn) {
+    printf("Weights (Input to Hidden):\n");
+    for (int i = 0; i < nn->input_size; i++) {
+        for (int j = 0; j < nn->hidden_size; j++) {
+            printf("%f ", nn->w_input_hidden[i][j]);
+        }
+        printf("\n");
+    }
+
+    printf("Weights (Hidden to Output):\n");
+    for (int j = 0; j < nn->hidden_size; j++) {
+        for (int k = 0; k < nn->output_size; k++) {
+            printf("%f ", nn->w_hidden_output[j][k]);
+        }
+        printf("\n");
+    }
+
+    printf("Bias (Hidden Layer):\n");
+    for (int j = 0; j < nn->hidden_size; j++) {
+        printf("%f ", nn->biais_hidden[j]);
+    }
+    printf("\n");
+
+    printf("Bias (Output Layer):\n");
+    for (int k = 0; k < nn->output_size; k++) {
+        printf("%f ", nn->biais_output[k]);
+    }
+    printf("\n");
+}
 
 int main() {
     RNA nn;
@@ -262,6 +291,8 @@ int main() {
         printf("Inputs: %f, %f - Output: %f, Expected: %f\n", 
                nn.input[0], nn.input[1], nn.output[0], targets[i]);
     }
+
+    print_weights_and_biases(&nn);
 
     // Libérer la mémoire allouée
     free_network(&nn);
