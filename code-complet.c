@@ -248,7 +248,11 @@ int main() {
     double targets[4] = { 0, 0, 0, 1 }; // Sorties attendues pour AND
 
     // Entraînement du réseau pour la porte AND
-    train(&nn, inputs, targets, 4, 10000, 0.1);
+    train(&nn, inputs, targets, 4, 20000, 0.01); 
+    // Pour améliorer les résultats on peux 
+            // - Diminuer le taux d'apprentissage
+            // - Augmenter le nombre d'époques
+
 
     // Test du réseau après entraînement
     for (int i = 0; i < 4; i++) {
