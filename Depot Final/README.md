@@ -15,7 +15,7 @@ Le modèle du réseau de neurones est constitué de :
 ### Étapes de Réalisation
 
 1. **Définition de la Structure du Réseau :** 
-   - Création des neurones d'entrée, de la couche cachée et du neurone de sortie.
+   - Création des neurones d'entrée, de la couche cachée et de la neurone de sortie.
 
 2. **Fonction d'Activation :**
    - Utilisation de la fonction sigmoïde pour introduire la non-linéarité.
@@ -34,28 +34,6 @@ Le modèle du réseau de neurones est constitué de :
 
 7. **Optimisation :**
    - Ajustement des hyperparamètres pour améliorer les résultats.
-
-## Threads et Mutex dans le Projet
-
-### Contexte
-
-Dans ce projet, des **threads** et des **mutex** sont utilisés pour paralléliser l'entraînement du réseau de neurones. L'objectif est d'améliorer les performances en permettant à plusieurs parties du réseau d'être entraînées simultanément sur plusieurs cœurs de processeur.
-
-### Rôle des Threads
-
-Les threads permettent de paralléliser les tâches, ce qui est particulièrement utile lors de l'entraînement d'un réseau de neurones. Dans ce projet, chaque neurone d'une couche peut être traité par un thread distinct, ce qui permet d'optimiser l'utilisation des ressources du processeur. L'entraînement est donc effectué plus rapidement en distribuant la charge de travail sur plusieurs threads.
-
-### Rôle des Mutex
-
-Les **mutex** (mutual exclusion locks) sont utilisés pour éviter les conflits d'accès aux ressources partagées, comme les poids du réseau. Lorsqu'un thread met à jour les poids, un mutex garantit que cette mise à jour est exclusive et qu'aucun autre thread ne modifie les mêmes poids en même temps. Cela permet de maintenir la cohérence des données et d'éviter les erreurs de synchronisation.
-
-Les mutex sont utilisés spécifiquement dans la rétropropagation, où les poids doivent être ajustés en fonction des erreurs calculées. Chaque thread obtient un verrou sur les poids avant de les modifier, puis libère ce verrou une fois la mise à jour effectuée. Cela empêche d'autres threads de modifier les poids en même temps et assure la stabilité du modèle.
-
-### Défis et Solutions
-
-- **Synchronisation des Threads :** La gestion de la synchronisation entre les threads est cruciale. L'utilisation de mutex garantit que les ressources partagées, telles que les poids, sont protégées contre les accès concurrentiels indésirables.
-  
-- **Performance :** L'utilisation de threads améliore la performance de l'entraînement, mais une mauvaise gestion des mutex peut entraîner des blocages. Il est donc essentiel d'optimiser l'utilisation des threads pour éviter les ralentissements dus à une synchronisation excessive.
 
 ## Propagation Avant et Rétropropagation
 
@@ -113,21 +91,35 @@ Ces étapes permettent au réseau de minimiser l'erreur entre les prédictions e
 ## Rôle du Taux d'Apprentissage
 
 ### Contrôle de la Taille des Mises à Jour
-- Le taux d'apprentissage détermine la quantité par laquelle les poids du réseau sont ajustés à chaque itération lors de la rétropropagation.
-- Si le taux d'apprentissage est trop élevé, les mises à jour des poids peuvent être trop importantes, ce qui peut faire diverger le modèle (c'est-à-dire qu'il ne parviendra pas à converger vers un minimum de la fonction de perte).
+Le taux d'apprentissage détermine la quantité par laquelle les poids du réseau sont ajustés à chaque itération lors de la rétropropagation.
 
 ### Stabilité de l'Apprentissage
-- Un taux d'apprentissage trop élevé peut entraîner des oscillations autour du minimum, où le modèle ne parvient pas à converger, ce qui signifie que l'erreur de prédiction reste élevée.
-- En revanche, un taux d'apprentissage trop bas peut rendre l'apprentissage très lent et nécessiter de nombreuses itérations avant d'atteindre une performance acceptable.
+Un taux d'apprentissage trop élevé peut entraîner des oscillations autour du minimum, tandis qu'un taux trop bas peut rendre l'apprentissage trop lent.
 
 ### Équilibre entre Vitesse et Précision
-- Le choix d'un bon taux d'apprentissage est un équilibre entre rapidité (vitesse de convergence) et précision (capacité à minimiser la fonction de perte).
-- Un bon taux d'apprentissage permet au modèle d'apprendre efficacement sans sauter des minima locaux.
+Le taux d'apprentissage affecte la vitesse de convergence et la précision du modèle.
 
-## Stratégies d'Optimisation
+## Optimisation
 
-Pour améliorer le processus d'apprentissage, plusieurs stratégies peuvent être utilisées concernant le taux d'apprentissage :
+- **Taux d'Apprentissage Adaptatif** : Des algorithmes comme Adam ajustent automatiquement le taux d'apprentissage pour chaque poids.
 
-- **Taux d'Apprentissage Adaptatif**: Des algorithmes comme Adam ou RMSprop ajustent automatiquement le taux d'apprentissage pour chaque poids en fonction de l'historique des gradients.
+- **Diminution du Taux d'Apprentissage** : Réduire progressivement le taux d'apprentissage pour améliorer la convergence.
 
-- **Diminution du Taux d'Apprentissage**: Commencer avec un taux d'apprentissage relativement élevé et le réduire progressivement (annealing) peut aider à stabiliser l'apprentissage à mesure que le modèle converge.
+## Utilisation des Threads et Mutex
+
+L'entraînement de notre réseau de neurones bénéficie de l'utilisation des threads pour paralléliser certaines opérations comme la mise à jour des poids et le calcul des gradients, ce qui accélère le processus. Voici comment nous avons intégré les threads et les mutex :
+
+1. **Utilisation des Threads :**  
+   Les threads sont utilisés pour exécuter certaines tâches de manière concurrente. Par exemple, chaque thread peut être responsable du calcul des gradients pour un ensemble de poids, ce qui permet de répartir la charge de travail et d'augmenter l'efficacité du calcul, notamment pendant l'entraînement avec de grandes quantités de données.
+
+2. **Gestion des Mutex :**  
+   Les mutex sont utilisés pour synchroniser l'accès aux ressources partagées, notamment les poids et les biais du réseau de neurones. Lors de l'ajustement des poids, il est crucial que seuls les threads qui ont terminé leur calcul des gradients puissent modifier les poids. Les mutex verrouillent ces ressources partagées, empêchant ainsi les conflits et garantissant que les poids sont mis à jour de manière cohérente.
+
+3. **Sécurité des Mises à Jour Concurrentes :**  
+   Lorsqu'un thread a terminé son calcul de gradient, il utilise un mutex pour garantir qu'il accède en exclusivité aux poids qu'il doit mettre à jour. Cela évite que deux threads modifient les mêmes poids simultanément, ce qui pourrait entraîner des erreurs dans l'entraînement du réseau.
+
+4. **Amélioration de la Performance :**  
+   En utilisant plusieurs threads pour effectuer ces calculs en parallèle, l'entraînement du réseau peut se faire plus rapidement, surtout lors de la gestion de multiples ensembles de données ou de l'exécution d'une boucle d'entraînement sur plusieurs itérations.
+
+Ainsi, l'intégration des threads et des mutex dans ce projet permet non seulement de paralléliser certaines tâches, mais aussi de garantir que l'accès aux ressources partagées se fait de manière sécurisée, ce qui est essentiel pour le bon fonctionnement du réseau de neurones pendant son entraînement.
+
