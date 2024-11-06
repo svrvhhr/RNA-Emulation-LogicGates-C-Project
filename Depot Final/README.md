@@ -45,7 +45,7 @@ La propagation avant calcule la sortie de chaque neurone, couche par couche, de 
   z_j^{(l)} = \sum_{i} w_{ij}^{(l)} \cdot a_i^{(l-1)} + b_j^{(l)}
   \]
   où :
-  - \( w_{ij}^{(l)} \) est le poids entre le neurone \( i \) de la couche \( l-1 \) et le neurone \( j \) de la couche \( l \),
+  - `w_{ij}^{(l)}`  est le poids entre le neurone \( i \) de la couche \( l-1 \) et le neurone \( j \) de la couche \( l \),
   - \( a_i^{(l-1)} \) est l'activation du neurone \( i \) dans la couche précédente,
   - \( b_j^{(l)} \) est le biais du neurone \( j \) dans la couche \( l \).
 

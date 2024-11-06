@@ -11,9 +11,15 @@ void *train_logic_gate(void *args) {
 
     double (*inputs)[2];
     double *targets;
-    int epochs = 20000;
-    double learning_rate = 0.01;
+    int epochs = 30000;
+    double learning_rate = 0.005;
     const char *gate_name;
+
+     // Pour améliorer les résultats on peux 
+            // - Diminuer le taux d'apprentissage
+            // - Augmenter le nombre d'époques
+
+
 
     pthread_mutex_lock(&mutex);
     if (strcmp((char *)args, "AND") == 0) {
