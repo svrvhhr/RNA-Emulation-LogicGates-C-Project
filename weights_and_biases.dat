@@ -1,0 +1,9 @@
+input_0_to_hidden_0 0.1115
+input_0_to_hidden_1 -6.1446
+input_1_to_hidden_0 -6.1740
+input_1_to_hidden_1 0.2037
+hidden_0_to_output_0 -7.4508
+hidden_1_to_output_0 -7.6396
+biais_hidden_0 0.8200
+biais_hidden_1 0.6700
+biais_output_0 0.8200
